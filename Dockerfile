@@ -1,4 +1,4 @@
 from nginx
-Run rm -rf /usr/share/html/*
-Run cp . /usr/share/html/
-Expose "80"
+Run rm -rf /usr/share/nginx/html/*
+Copy index.html/usr/share/nginx/html/
+Expose 80
