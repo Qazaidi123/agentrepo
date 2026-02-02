@@ -27,3 +27,14 @@ pipeline {
     }
 }
 }
+post {
+    always {
+        echo "pipeline finished"
+    }
+    success {
+        emailext( subject: "SUCCESS: ${JOB_NAME}#${BUILD_NUMBER}", to: '$DEFAULT_RECIPIENTS', body: "Build_Success: ${Build_URL}" )
+    }
+    failure {
+        emailext( subject: "FAILED: ${JOB_NAME}#${BUILD_NUMBER}" , to: '$DEFAULT_RECEPIENTS' , body: "Build _Failed: ${BUILD_URL}" )
+    }
+}
