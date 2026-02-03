@@ -25,10 +25,10 @@ pipeline {
         stage('Deploy Container') {
             steps {
                 echo "stop existing container if it exist"
-                sh "docker stop c2 || true"
-                sh "docker rm c2 || true"
+                sh "docker stop C3 || true"
+                sh "docker rm C3 || true"
                 echo "Starting new Container"
-                sh "docker run -d -p 80:80 --name c2 ${DOCKER_IMAGE} tail -f /dev/null"
+                sh "docker run -d -p 80:80 --name C3 ${DOCKER_IMAGE} tail -f /dev/null"
             }
         }
     }
