@@ -1,9 +1,9 @@
 pipeline {
     agent { label "${LABEL_NAME}" }
-    envirornment {
-        IMAGE_NAME = " simpleimage "
+    environment {
+        IMAGE_NAME = "simpleimage"
         IMAGE_TAG = "${BUILD_NUMBER}"
-        DOCKER_IMAGE = "${IMAGE_NAME} : ${IMAGE_TAG}"
+        DOCKER_IMAGE = "${IMAGE_NAME}:${IMAGE_TAG}"
     }
     stages {
         stage ( 'code' ) {
@@ -26,15 +26,16 @@ pipeline {
                }
     }
 }
-}
+
 post {
     always {
         echo "pipeline finished"
     }
     success {
-        emailext( subject: "SUCCESS: ${JOB_NAME}#${BUILD_NUMBER}", to: 'zaidi.qumar@gmail.com', body: "Build_Success: ${Build_URL}" )
+        emailext( subject: "SUCCESS: ${JOB_NAME}#${BUILD_NUMBER}", to: 'zaidi.qumar@gmail.com', body: "Build_Success: ${BUILD_URL}" )
     }
     failure {
         emailext( subject: "FAILED: ${JOB_NAME}#${BUILD_NUMBER}" , to: 'zaidi.qumar@gmail.com' , body: "Build _Failed: ${BUILD_URL}" )
     }
+}
 }
