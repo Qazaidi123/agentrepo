@@ -1,43 +1,57 @@
 pipeline {
-    agent { label "${LABEL_NAME}" }
+        agent { label "${LABEL_NAME}" }
+
     environment {
         IMAGE_NAME = "simpleimage"
         IMAGE_TAG = "${BUILD_NUMBER}"
         DOCKER_IMAGE = "${IMAGE_NAME}:${IMAGE_TAG}"
     }
+
     stages {
-        stage ('code') {
+
+        stage('code') {
             steps {
-                git url:"https://github.com/Qazaidi123/agentrepo.git" , branch: "main"                 
+                echo "cloning repo"
+                git url: "https://github.com/Qazaidi123/agentrepo.git", branch: "main"
             }
         }
-        stage ('build') {
-             steps {
-                 sh "docker build -t ${DOCKER_IMAGE} ."
-             }
-        }   
-        
-         stage ('deploy') {
-               steps {
-                   sh "docker stop c2 || true"
-                   sh "docker rm c2 || true"
-                   sh "docker run -d -p 80:80 --name c2 ${DOCKER_IMAGE} tail -f /dev/null"
-                   
-               }
-    }
+
+        stage('Build docker image') {
+            steps {
+                sh "docker build -t ${DOCKER_IMAGE} ."
+            }
+        }
+
+        stage('Deploy Container') {
+            steps {
+                echo "stop existing container if it exist"
+                sh "docker stop c2 || true"
+                sh "docker rm c2 || true"
+                echo "Starting new Container"
+                sh "docker run -d -p 80:80 --name c2 ${DOCKER_IMAGE} tail -f /dev/null"
+            }
+        }
     }
 
+    post {
+        always {
+            echo "pipeline finished"
+        }
 
-post {
-    always {
-        echo "pipeline finished"
-    }
-    success {
-        emailext( subject: "SUCCESS: ${JOB_NAME}#${BUILD_NUMBER}", to: 'zaidi.qumar@gmail.com', body: "Build_Success: ${BUILD_URL}" )
-    }
-    failure {
-        emailext( subject: "FAILED: ${JOB_NAME}#${BUILD_NUMBER}" , to: 'zaidi.qumar@gmail.com' , body: "Build _Failed: ${BUILD_URL}" )
+        success {
+            emailext(
+                subject: "SUCCESS: ${JOB_NAME}#${BUILD_NUMBER}",
+                to: 'zaidi.qumar@gmail.com',
+                body: "Build Success: ${BUILD_URL}"
+            )
+        }
+
+        failure {
+            emailext(
+                subject: "FAILED: ${JOB_NAME}#${BUILD_NUMBER}",
+                to: 'zaidi.qumar@gmail.com',
+                body: "Build Failed: ${BUILD_URL}"
+            )
+        }
     }
 }
-}
-
