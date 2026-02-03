@@ -21,7 +21,7 @@ pipeline {
                steps {
                    sh "docker stop c2 || true"
                    sh "docker rm c2 || true"
-                   sh "docker run -d -p 80:80 --name c2 ${DOCKER_IMAGE} sleep infinity"
+                   sh "docker run -d -p 80:80 --name c2 ${DOCKER_IMAGE} tail -f /dev/null"
                    
                }
     }
