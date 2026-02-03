@@ -6,12 +6,12 @@ pipeline {
         DOCKER_IMAGE = "${IMAGE_NAME}:${IMAGE_TAG}"
     }
     stages {
-        stage ( 'code' ) {
+        stage ('code') {
             steps {
                 git url:"https://github.com/Qazaidi123/agentrepo.git" , branch: "main"                 
             }
         }
-        stage ( 'build' ) {
+        stage ('build') {
              steps {
                  sh "docker build -t ${DOCKER_IMAGE} ."
              }
