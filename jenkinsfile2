@@ -1,5 +1,5 @@
 pipeline {
-    agent { label "${AGENT_LABEL}" }
+        agent { label "${AGENT_LABEL}" }
 
     environment {
         IMAGE_NAME = "simpleimage"
