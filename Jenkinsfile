@@ -39,6 +39,7 @@ pipeline {
         }
 
         success {
+            archiveArtifacts artifacts: "*.tar"
             emailext(
                 subject: "SUCCESS: ${JOB_NAME}#${BUILD_NUMBER}",
                 to: 'sabika.zaidi.54@gmail.com',
