@@ -28,7 +28,7 @@ pipeline {
                 sh "docker stop C3 || true"
                 sh "docker rm C3 || true"
                 echo "Starting new Container"
-                sh "docker run -d -p 80:80 --name C3 ${DOCKER_IMAGE} tail -f /dev/null"
+                sh "docker run -d -p 80:80 --name C3 ${DOCKER_IMAGE}"
             }
         }
     }
@@ -39,7 +39,7 @@ pipeline {
         }
 
         success {
-            archiveArtifacts artifacts: "*.tar"
+        
             emailext(
                 subject: "SUCCESS: ${JOB_NAME}#${BUILD_NUMBER}",
                 to: 'sabika.zaidi.54@gmail.com',
